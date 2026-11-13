@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Loading…</title>
+<meta name="description" content="">
+<meta name="theme-color" content="#0a0f1d">
+<style>
+:root{--ac:#4f8cff;--bg:#0a0f1d;--s1:#111832;--s2:#18213f;--bd:#26315a;--tx:#e8ecf7;--mu:#8d97b5;--ok:#2fbf71;--er:#f2545b}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;line-height:1.5;
+  background-image:radial-gradient(900px 420px at 85% -10%,color-mix(in srgb,var(--ac) 22%,transparent),transparent)}
+a{color:var(--ac)}
+/* sidebar */
+#sd{position:fixed;top:0;bottom:0;left:0;width:240px;background:var(--s1);border-right:1px solid var(--bd);display:flex;flex-direction:column;padding:16px 12px;gap:4px;z-index:40;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;padding:4px 8px 16px;letter-spacing:-.2px}
+.logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--ac),color-mix(in srgb,var(--ac) 45%,#000));display:grid;place-items:center;font-size:20px;overflow:hidden;flex:none}
+.logo img{width:100%;height:100%;object-fit:cover}
+#sd nav{display:flex;flex-direction:column;gap:3px}
+#sd nav button,#sd .bt{background:none;color:var(--mu);text-align:left;display:flex;gap:10px;align-items:center;font-weight:600;padding:11px 12px;border-radius:11px;width:100%}
+#sd nav button.on{background:var(--ac);color:#fff}
+#sd nav button:hover:not(.on){background:var(--s2);color:var(--tx);filter:none}
+#sd .sp{flex:1}
+.me{display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg);border:1px solid var(--bd);border-radius:12px;margin-bottom:6px}
+.me i{width:32px;height:32px;border-radius:50%;background:var(--ac);display:grid;place-items:center;font-style:normal;font-weight:800;flex:none}
+.me b{display:block;font-size:14px;word-break:break-all}.me span{font-size:12px;color:var(--mu)}
+#tb{display:none}#ov{display:none}
+#ann{background:var(--ac);color:#fff;text-align:center;font-size:14px;padding:9px 14px;display:none;font-weight:500}
+#main{margin-left:240px;min-height:100vh;display:flex;flex-direction:column}
+.wrap{max-width:860px;width:100%;margin:0 auto;padding:22px 22px 10px;flex:1}
+.page{display:none}.page.on{display:block}
+h2.pt{font-size:24px;letter-spacing:-.4px;margin-bottom:16px}
+.hero{padding:26px 0 18px;text-align:center}
+.hero h1{font-size:clamp(28px,5vw,42px);line-height:1.12;letter-spacing:-1px;margin-bottom:12px}
+.hero p{color:var(--mu);max-width:520px;margin:0 auto;font-size:16px}
+.card{background:linear-gradient(180deg,var(--s1),color-mix(in srgb,var(--s1) 85%,#000));border:1px solid var(--bd);border-radius:18px;padding:20px;margin-bottom:16px}
+h3{font-size:16px;margin-bottom:12px}
+input{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:11px;padding:12px 13px;font-size:15px;margin-bottom:10px;outline:none;font-family:inherit}
+input:focus{border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 25%,transparent)}
+button{font-family:inherit;background:var(--ac);color:#fff;border:0;border-radius:11px;padding:12px 18px;font-size:15px;font-weight:600;cursor:pointer;transition:.15s}
+button:hover{filter:brightness(1.1)}button:active{transform:scale(.98)}button:disabled{opacity:.5;cursor:default}
+button.g{background:var(--s2);border:1px solid var(--bd);color:var(--tx)}
+button.r{background:color-mix(in srgb,var(--er) 18%,transparent);color:#ff8b90;border:1px solid color-mix(in srgb,var(--er) 40%,transparent)}
+button.sm{padding:7px 12px;font-size:13px;border-radius:9px}.full{width:100%}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--bg);padding:5px;border-radius:13px;margin-bottom:16px;border:1px solid var(--bd)}
+.tabs button{background:none;color:var(--mu)}.tabs button.on{background:var(--ac);color:#fff}
+.drop{border:2px dashed var(--bd);border-radius:16px;padding:26px 14px;text-align:center;cursor:pointer;transition:.15s;margin-bottom:12px;background:var(--bg)}
+.drop:hover,.drop.dz{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 8%,var(--bg))}
+.drop b{display:block;margin:6px 0 2px}.drop small{color:var(--mu)}
+.bar{height:8px;background:var(--bg);border-radius:9px;overflow:hidden;margin:4px 0 12px;display:none}.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .15s}
+.row{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.site{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 0;border-top:1px solid var(--bd);flex-wrap:wrap}
+.site:first-of-type{border-top:0}.site .n{font-weight:700;word-break:break-all}.site .m{font-size:12.5px;color:var(--mu)}
+.pill{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:99px;font-weight:600}
+.pill.ok{background:color-mix(in srgb,var(--ok) 18%,transparent);color:#6ee7a4}.pill.off{background:color-mix(in srgb,var(--er) 18%,transparent);color:#ff9aa0}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.chs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.ch{display:flex;gap:12px;align-items:center;padding:14px;background:var(--bg);border:1px solid var(--bd);border-radius:14px;text-decoration:none;color:var(--tx);transition:.15s}
+.ch:hover{border-color:var(--ac);transform:translateY(-2px)}
+.ch .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:21px;flex:none}
+.ch b{display:block;font-size:15px}.ch span{font-size:12.5px;color:var(--mu)}.ch .go{margin-left:auto;color:var(--mu)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:20px}
+.steps div{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:14px;text-align:left;font-size:14px}
+.steps i{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--ac);color:#fff;font-style:normal;font-weight:700;font-size:13px;margin-bottom:6px}
+.warn{background:color-mix(in srgb,#f5a623 14%,transparent);border:1px solid color-mix(in srgb,#f5a623 45%,transparent);color:#ffd48a;border-radius:14px;padding:14px;margin-bottom:16px;font-size:14px}
+.setup{border-color:var(--er)}
+footer{padding:20px 22px 34px;text-align:center;color:var(--mu);font-size:13px}
+#t{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(20px);padding:11px 18px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:92vw;box-shadow:0 8px 30px #0008}
+#t.show{opacity:1;transform:translateX(-50%)}
+.hide{display:none!important}.mut{color:var(--mu);font-size:13px}
+@media(max-width:820px){
+ #tb{display:flex;position:sticky;top:0;z-index:20;background:var(--s1);border-bottom:1px solid var(--bd);padding:10px 14px;align-items:center;gap:12px;font-weight:800}
+ #tb button{padding:7px 12px;font-size:18px;line-height:1}#tb .logo{width:30px;height:30px;font-size:16px;border-radius:9px}
+ #sd{transform:translateX(-102%);transition:transform .22s;box-shadow:12px 0 40px #000a}
+ body.nav #sd{transform:none}body.nav #ov{display:block;position:fixed;inset:0;background:#0009;z-index:30}
+ #main{margin-left:0}.wrap{padding:16px 14px 6px}
+}
+</style>
+</head>
+<body>
+<div id="tb"><button class="g" id="mb">☰</button><div class="logo" id="logo2"></div><span id="nm2"></span></div>
+<div id="ov"></div>
+<aside id="sd">
+  <div class="brand"><div class="logo" id="logo"></div><span id="nm"></span></div>
+  <nav>
+    <button data-p="home" class="on" id="nhome">🏠 Home</button>
+    <button data-p="up" class="hide" id="nup">📤 Upload</button>
+    <button data-p="sites" class="hide" id="nsites">🌐 Meri sites</button>
+    <button data-p="ch" class="hide" id="nch">📢 Channels</button>
+  </nav>
+  <div class="sp"></div>
+  <div class="me hide" id="who"><i id="av"></i><div><b id="me"></b><span>Logged in</span></div></div>
+  <nav><a class="bt" href="/admin" target="_blank" rel="noopener" style="text-decoration:none">🔐 Admin Panel</a><button id="outb" class="hide">🚪 Logout</button><button id="inb" class="hide">🔑 Login / Signup</button></nav>
+</aside>
+
+<div id="main">
+  <div id="ann"></div>
+  <div class="wrap">
+    <div id="setup" class="card setup hide"></div>
+    <div id="maint" class="warn hide"></div>
+
+    <section class="page on" id="p-home">
+      <div class="hero" id="hero"><h1 id="h1"></h1><p id="hp"></p>
+        <div class="steps">
+          <div><i>1</i><b>Account banao</b><br><span class="mut">30 second mein</span></div>
+          <div><i>2</i><b>ZIP upload karo</b><br><span class="mut">index.html zaroori</span></div>
+          <div><i>3</i><b>Link share karo</b><br><span class="mut">turant live</span></div>
+        </div>
+      </div>
+      <div id="authsec" class="card" style="max-width:440px;margin:0 auto 18px">
+        <div class="tabs"><button id="tl" class="on">Login</button><button id="ts">Signup</button></div>
+        <input id="u" placeholder="Username" autocomplete="username" autocapitalize="none">
+        <input id="p" type="password" placeholder="Password (min 8)" autocomplete="current-password">
+        <button class="full" id="go">Login</button>
+        <p class="mut" id="sunote" style="margin-top:10px;text-align:center"></p>
+      </div>
+      <div id="welcome" class="card hide"><h3 id="wt"></h3><p class="mut">Left menu se <b>Upload</b> kholo aur apni site live karo.</p><div class="row" style="justify-content:flex-start;margin-top:12px"><button data-go="up">📤 Upload karo</button><button class="g" data-go="sites">🌐 Meri sites</button></div></div>
+    </section>
+
+    <section class="page" id="p-up">
+      <h2 class="pt">📤 Naya site / update</h2>
+      <div class="card">
+        <div class="drop" id="drop"><div style="font-size:30px">📦</div><b id="dt">ZIP / HTML file yahan chuno ya drop karo</b><small id="dsub"></small></div>
+        <input type="file" id="file" accept=".zip,.html,.htm" class="hide">
+        <input id="sn" placeholder="site-naam (a-z, 0-9, -)" autocapitalize="none">
+        <div class="bar" id="bar"><i></i></div>
+        <button class="full" id="up">🚀 Upload & Publish</button>
+      </div>
+    </section>
+
+    <section class="page" id="p-sites">
+      <div class="row"><h2 class="pt">🌐 Meri sites</h2><span class="mut" id="lim"></span></div>
+      <div class="card"><div id="sites"></div></div>
+    </section>
+
+    <section class="page" id="p-ch">
+      <h2 class="pt" id="cht">📢 Hamare channels</h2>
+      <div class="card"><div class="chs" id="chs"></div><p class="mut" id="chnone" style="display:none">Abhi koi channel nahi.</p></div>
+    </section>
+  </div>
+  <footer><div id="ft"></div><div id="dv"></div><div id="ct"></div></footer>
+</div>
+<div id="t"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let C={},mode='login',user=null,file=null,kind='zip',PG='home';
+const PL={telegram:['✈️','#2aabee'],whatsapp:['💬','#25d366'],youtube:['▶️','#ff3b3b'],instagram:['📸','#e1306c'],discord:['🎮','#5865f2'],twitter:['𝕏','#9aa4b2'],facebook:['📘','#1877f2'],website:['🌐','#4f8cff'],other:['🔗','#8d97b5']};
+
+function toast(m,ok=true){const t=$('t');t.textContent=m;t.style.background=ok?'#1f8f55':'#c53a41';t.classList.add('show');clearTimeout(toast.i);toast.i=setTimeout(()=>t.classList.remove('show'),3400)}
+async function api(url,method='GET',b){const r=await fetch(url,{method,headers:b?{'Content-Type':'application/json'}:{},body:b?JSON.stringify(b):undefined});const j=await r.json().catch(()=>({}));if(!r.ok){const e=new Error(j.error||'Error');e.data=j;throw e}return j}
+
+/* ---------- sidebar / pages ---------- */
+function show(p){
+  PG=p;document.body.classList.remove('nav');
+  document.querySelectorAll('.page').forEach(x=>x.classList.toggle('on',x.id==='p-'+p));
+  document.querySelectorAll('#sd nav button[data-p]').forEach(b=>b.classList.toggle('on',b.dataset.p===p));
+  if(p==='sites')list();window.scrollTo(0,0);
+}
+document.querySelectorAll('#sd nav button[data-p]').forEach(b=>b.onclick=()=>show(b.dataset.p));
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>show(b.dataset.go));
+$('mb').onclick=()=>document.body.classList.toggle('nav');$('ov').onclick=()=>document.body.classList.remove('nav');
+$('inb').onclick=()=>show('home');
+
+/* ---------- branding / config (everything from the admin panel) ---------- */
+async function loadCfg(){
+  try{C=await api('/api/config')}catch(e){C={name:'Hosting',logo:'🚀',channels:[],accent:'#4f8cff',maxZipMB:4,maxSites:5,signupOpen:true};
+    if(e.data?.setup){$('setup').classList.remove('hide');$('setup').innerHTML='<h3>⚙️ Setup baaki hai</h3><p style="color:#ff9aa0;margin-bottom:8px"><b>'+esc(e.message)+'</b></p><p class="mut">Vercel → is project ke Settings → Environment Variables me <b>UPSTASH_REDIS_REST_URL</b> aur <b>UPSTASH_REDIS_REST_TOKEN</b> daalo, phir Deployments → Redeploy karo. Check: <a href="/api/health">/api/health</a></p>'}}
+  document.documentElement.style.setProperty('--ac',C.accent||'#4f8cff');
+  document.title=C.name+(C.tagline?' – '+C.tagline:'');
+  document.querySelector('meta[name=description]').content=C.seoDesc||C.tagline||'';
+  const isImg=/^https?:\/\//i.test(C.logo||'');const lg=isImg?'<img alt="" src="'+esc(C.logo)+'">':esc(C.logo||'🚀');
+  $('logo').innerHTML=lg;$('logo2').innerHTML=lg;
+  const fav=isImg?C.logo:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">'+(C.logo||'🚀')+'</text></svg>');
+  let l=document.querySelector('link[rel=icon]');if(!l){l=document.createElement('link');l.rel='icon';document.head.appendChild(l)}l.href=fav;
+  $('nm').textContent=C.name;$('nm2').textContent=C.name;$('h1').textContent=C.heroTitle||C.name;$('hp').textContent=C.heroText||'';
+  $('ann').style.display=C.announce?'block':'none';$('ann').textContent=C.announce||'';
+  $('ft').textContent=C.footer||('© '+new Date().getFullYear()+' '+C.name);
+  $('dv').innerHTML=C.devName?'Developed by '+(C.devLink?'<a href="'+esc(C.devLink)+'" target="_blank" rel="noopener"><b>'+esc(C.devName)+'</b></a>':'<b>'+esc(C.devName)+'</b>')+' ❤️':'';
+  const ct=C.contact||'';$('ct').innerHTML=ct?(/^https?:\/\//i.test(ct)?'<a href="'+esc(ct)+'" target="_blank" rel="noopener">Contact</a>':esc(ct)):'';
+  $('maint').classList.toggle('hide',!C.maintenance);$('maint').textContent='🛠 '+(C.maintenanceMsg||'');
+  $('dsub').textContent='Max '+(C.maxZipMB||4)+'MB • file ≤ 600KB • html, css, js, images, fonts';
+  $('sunote').textContent=C.signupOpen===false?'🔒 Naye signup abhi band hain':'';
+  $('ts').classList.toggle('hide',C.signupOpen===false);
+  if(C.signupOpen===false&&mode==='signup'){mode='login';ui()}
+  drawChannels();
+}
+function drawChannels(){
+  const ch=C.channels||[];$('nch').classList.toggle('hide',!ch.length);$('chnone').style.display=ch.length?'none':'block';
+  $('chs').innerHTML=ch.map(c=>{const p=PL[c.platform]||PL.other;
+    return '<a class="ch" href="/api/go?id='+esc(c.id)+'" target="_blank" rel="noopener"><div class="ic" style="background:'+p[1]+'26;color:'+p[1]+'">'+p[0]+'</div><div><b>'+esc(c.name)+'</b><span>'+esc(c.desc||('Join karo '+c.platform))+'</span></div><span class="go">↗</span></a>'}).join('');
+  if(!ch.length&&PG==='ch')show('home');
+}
+
+/* ---------- auth ---------- */
+function ui(){$('go').textContent=mode==='login'?'Login':'Account banao';$('tl').classList.toggle('on',mode==='login');$('ts').classList.toggle('on',mode==='signup');$('p').autocomplete=mode==='login'?'current-password':'new-password'}
+$('tl').onclick=()=>{mode='login';ui()};$('ts').onclick=()=>{mode='signup';ui()};
+$('go').onclick=async()=>{$('go').disabled=true;try{await api('/api/auth','POST',{action:mode,username:$('u').value,password:$('p').value});$('p').value='';await init(true)}catch(e){toast(e.message,false)}$('go').disabled=false};
+$('p').onkeydown=e=>{if(e.key==='Enter')$('go').click()};
+$('outb').onclick=async()=>{await api('/api/auth','POST',{action:'logout'});await init();show('home')};
+async function init(fresh){
+  ui();const j=await api('/api/auth').catch(()=>({}));user=j.user||null;const maint=!!C.maintenance;
+  $('authsec').classList.toggle('hide',!!user||maint);$('hero').classList.toggle('hide',!!user);$('welcome').classList.toggle('hide',!user);
+  $('nup').classList.toggle('hide',!user||maint);$('nsites').classList.toggle('hide',!user);
+  $('who').classList.toggle('hide',!user);$('outb').classList.toggle('hide',!user);$('inb').classList.toggle('hide',!!user||maint);
+  if(user){$('me').textContent='@'+user;$('av').textContent=user[0].toUpperCase();$('wt').textContent='👋 Welcome, '+user+'!';if(fresh)show('up')}
+}
+
+/* ---------- sites ---------- */
+async function list(){
+  try{const j=await api('/api/sites');$('lim').textContent=j.sites.length+' / '+j.limit+' sites';
+    $('sites').innerHTML=j.sites.map(s=>{const url=location.origin+'/s/'+s.name,off=String(s.disabled)==='1';
+      return '<div class="site"><div><div class="n"><a href="/s/'+esc(s.name)+'" target="_blank" rel="noopener">'+esc(s.name)+'</a> <span class="pill '+(off?'off':'ok')+'">'+(off?'Disabled':'Live')+'</span></div>'+
+      '<div class="m">👁 '+(s.visits||0)+' visits • '+(s.files||0)+' files • '+((s.size||0)/1024).toFixed(0)+' KB</div></div>'+
+      '<div class="acts"><button class="g sm" data-c="'+esc(url)+'">📋 Copy</button><button class="g sm" data-u="'+esc(s.name)+'">⬆ Update</button><button class="r sm" data-d="'+esc(s.name)+'">Delete</button></div></div>'}).join('')||'<p class="mut" style="padding:6px 0">Abhi koi site nahi. Left menu se <b>Upload</b> kholo 👈</p>'}
+  catch(e){toast(e.message,false)}
+}
+$('sites').onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.c){try{await navigator.clipboard.writeText(b.dataset.c);toast('Link copy ho gaya ✔')}catch{prompt('Link copy karo:',b.dataset.c)}}
+  if(b.dataset.u){$('sn').value=b.dataset.u;show('up');toast('Ab naya ZIP chuno aur Upload dabao')}
+  if(b.dataset.d&&confirm(b.dataset.d+' delete karni hai?')){try{await api('/api/sites','DELETE',{name:b.dataset.d});toast('Delete ho gayi');list()}catch(er){toast(er.message,false)}}};
+
+function pick(f){
+  if(!f)return;const lower=f.name.toLowerCase();
+  if(!/\.(zip|html?)$/.test(lower))return toast('Sirf .zip ya .html file chuno',false);
+  if(f.size>(C.maxZipMB||4)*1048576)return toast('File '+(C.maxZipMB||4)+'MB se badi hai',false);
+  file=f;kind=/\.zip$/.test(lower)?'zip':'html';$('dt').textContent='✅ '+f.name+' ('+(f.size/1024).toFixed(0)+' KB)';
+  if(!$('sn').value)$('sn').value=f.name.replace(/\.[^.]+$/,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,30);
+}
+$('drop').onclick=()=>$('file').click();$('file').onchange=e=>pick(e.target.files[0]);
+['dragover','dragenter'].forEach(ev=>$('drop').addEventListener(ev,e=>{e.preventDefault();$('drop').classList.add('dz')}));
+['dragleave','drop'].forEach(ev=>$('drop').addEventListener(ev,e=>{e.preventDefault();$('drop').classList.remove('dz')}));
+$('drop').addEventListener('drop',e=>pick(e.dataTransfer.files[0]));
+$('up').onclick=()=>{
+  if(!file)return toast('Pehle ZIP ya HTML file chuno',false);
+  const name=$('sn').value.trim().toLowerCase();if(!name)return toast('Site ka naam likho',false);
+  const x=new XMLHttpRequest();x.open('POST','/api/sites?name='+encodeURIComponent(name)+'&kind='+kind);x.setRequestHeader('Content-Type','application/octet-stream');
+  $('bar').style.display='block';$('up').disabled=true;
+  x.upload.onprogress=e=>{if(e.lengthComputable)$('bar').firstElementChild.style.width=(e.loaded/e.total*100)+'%'};
+  x.onload=()=>{$('bar').style.display='none';$('up').disabled=false;let j={};try{j=JSON.parse(x.responseText)}catch{}
+    if(x.status===413)return toast('File Vercel ke limit (4.5MB) se badi hai',false);
+    if(x.status>=400)return toast(j.error||'Upload fail',false);
+    toast('🎉 Live: '+location.origin+j.url+(j.skipped?.length?' ('+j.skipped.length+' unsupported file skip hui)':''));
+    file=null;$('file').value='';$('dt').textContent='ZIP / HTML file yahan chuno ya drop karo';$('sn').value='';show('sites')};
+  x.onerror=()=>{$('bar').style.display='none';$('up').disabled=false;toast('Network error',false)};
+  x.send(file);
+};
+(async()=>{await loadCfg();await init()})();
+</script>
+</body>
+</html>
