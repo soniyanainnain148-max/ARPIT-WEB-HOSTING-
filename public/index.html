@@ -166,7 +166,7 @@ $('inb').onclick=()=>show('home');
 
 /* ---------- branding / config (everything from the admin panel) ---------- */
 async function loadCfg(){
-  try{C=await api('/api/config')}catch(e){C={name:'Hosting',logo:'🚀',channels:[],accent:'#4f8cff',maxZipMB:4,maxSites:5,signupOpen:true};
+  try{C=await api('/api/config')}catch(e){C={name:'ARPIT HOSTING',logo:'🚀',channels:[],accent:'#4f8cff',maxZipMB:4,maxSites:5,signupOpen:true};
     if(e.data?.setup){$('setup').classList.remove('hide');$('setup').innerHTML='<h3>⚙️ Setup baaki hai</h3><p style="color:#ff9aa0;margin-bottom:8px"><b>'+esc(e.message)+'</b></p><p class="mut">Vercel → is project ke Settings → Environment Variables me <b>UPSTASH_REDIS_REST_URL</b> aur <b>UPSTASH_REDIS_REST_TOKEN</b> daalo, phir Deployments → Redeploy karo. Check: <a href="/api/health">/api/health</a></p>'}}
   document.documentElement.style.setProperty('--ac',C.accent||'#4f8cff');
   document.title=C.name+(C.tagline?' – '+C.tagline:'');
