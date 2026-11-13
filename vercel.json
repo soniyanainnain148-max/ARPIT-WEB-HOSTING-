@@ -1,0 +1,11 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/s/:site", "destination": "/api/serve?site=:site" },
+    { "source": "/s/:site/:path*", "destination": "/api/serve?site=:site&path=:path*" }
+  ],
+  "headers": [
+    { "source": "/admin", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" }, { "key": "Cache-Control", "value": "no-store" } ] },
+    { "source": "/api/admin/(.*)", "headers": [ { "key": "Cache-Control", "value": "no-store" } ] }
+  ]
+}
