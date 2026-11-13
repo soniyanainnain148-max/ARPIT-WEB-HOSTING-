@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin Panel</title>
+<style>
+:root{--ac:#4f8cff;--bg:#080c18;--s1:#0f1630;--s2:#162042;--bd:#243058;--tx:#e8ecf7;--mu:#8d97b5;--ok:#2fbf71;--er:#f2545b;--wa:#f5a623}
+*{box-sizing:border-box;margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);line-height:1.45;font-size:14.5px}
+a{color:var(--ac)}
+input,select,textarea{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;font-size:14.5px;outline:none;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:var(--ac)}
+input[type=checkbox]{width:auto}input[type=color]{padding:2px;height:42px;width:70px}
+label{display:block;font-size:12.5px;color:var(--mu);margin:0 0 5px;font-weight:600}
+button{font-family:inherit;background:var(--ac);color:#fff;border:0;border-radius:10px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer}
+button:hover{filter:brightness(1.12)}button.g{background:var(--s2);border:1px solid var(--bd);color:var(--tx)}
+button.r{background:color-mix(in srgb,var(--er) 18%,transparent);color:#ff8b90;border:1px solid color-mix(in srgb,var(--er) 40%,transparent)}
+button.ok{background:var(--ok)}button.sm{padding:6px 10px;font-size:12.5px;border-radius:8px}
+.box{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
+.box h3{font-size:15px;margin-bottom:12px}
+.mut{color:var(--mu);font-size:13px}
+/* layout */
+#app{display:none;min-height:100vh}
+#sd{position:fixed;top:0;bottom:0;left:0;width:216px;background:var(--s1);border-right:1px solid var(--bd);padding:14px 10px;display:flex;flex-direction:column;gap:3px;overflow:auto}
+#sd .lg{font-weight:800;font-size:16px;padding:6px 10px 14px}
+#sd button{background:none;color:var(--mu);text-align:left;display:flex;gap:9px;align-items:center;font-weight:600;padding:10px 12px}
+#sd button.on{background:var(--ac);color:#fff}#sd button:hover:not(.on){background:var(--s2);filter:none}
+#sd .sp{flex:1}
+#m{margin-left:216px;padding:22px;max-width:1100px}
+#m>h2{font-size:22px;margin-bottom:16px}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.stat{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:14px}.stat .n{font-size:26px;font-weight:800;letter-spacing:-.5px}.stat .l{color:var(--mu);font-size:12.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.f{margin-bottom:12px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--bd);white-space:nowrap;vertical-align:middle}th{color:var(--mu);font-size:12px;font-weight:600}
+.pill{font-size:11.5px;padding:2px 9px;border-radius:99px;font-weight:700;display:inline-block}
+.pill.ok{background:color-mix(in srgb,var(--ok) 18%,transparent);color:#6ee7a4}.pill.off{background:color-mix(in srgb,var(--er) 18%,transparent);color:#ff9aa0}.pill.wa{background:color-mix(in srgb,var(--wa) 18%,transparent);color:#ffd48a}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row.sb{justify-content:space-between}
+.sw{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg);border:1px solid var(--bd);border-radius:10px;cursor:pointer}
+.sw input{width:18px;height:18px}.sw b{display:block}.sw span{font-size:12.5px;color:var(--mu)}
+.bars{display:flex;gap:5px;align-items:flex-end;height:120px;margin-top:6px}
+.bars div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:2px;font-size:10px;color:var(--mu)}
+.bars i{width:100%;border-radius:5px 5px 0 0;background:var(--ac);min-height:2px;display:block}.bars i.u{background:var(--ok)}
+.lg2{display:flex;gap:14px;font-size:12px;color:var(--mu)}.lg2 b{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
+.log{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13.5px}.log time{color:var(--mu);min-width:118px;font-size:12px}
+.chr{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--bd);border-radius:12px;background:var(--bg);margin-bottom:8px;flex-wrap:wrap}
+.chr .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:19px;background:var(--s2)}
+.chr .i{flex:1;min-width:150px}.chr .i b{display:block}
+#t{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);padding:11px 18px;border-radius:12px;display:none;z-index:99;font-weight:600;box-shadow:0 8px 30px #0009;max-width:92vw}
+#lg{max-width:370px;margin:12vh auto 0;padding:18px}
+dialog{background:var(--s1);color:var(--tx);border:1px solid var(--bd);border-radius:16px;padding:20px;width:min(520px,94vw)}dialog::backdrop{background:#000a}
+code{background:var(--bg);border:1px solid var(--bd);padding:1px 6px;border-radius:6px;font-size:12.5px}
+.help li{margin:6px 0 6px 18px}
+#tb{display:none}#ov{display:none}
+@media(max-width:820px){
+ #tb{display:flex;position:sticky;top:0;z-index:20;background:var(--s1);border-bottom:1px solid var(--bd);padding:10px 14px;align-items:center;gap:12px;font-weight:800}
+ #tb button{padding:7px 12px;font-size:18px;line-height:1}
+ #sd{transform:translateX(-102%);transition:transform .22s;z-index:40;width:250px;box-shadow:12px 0 40px #000a}
+ body.nav #sd{transform:none}
+ body.nav #ov{display:block;position:fixed;inset:0;background:#0009;z-index:30}
+ #m{margin:0;padding:16px 14px 60px}.grid2,.grid3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="lg"><div class="box" style="padding:22px">
+  <div style="font-size:34px">🔐</div><h2 style="margin:6px 0 4px">Admin Login</h2>
+  <p class="mut" style="margin-bottom:14px">Is project ke Vercel env me jo <code>ADMIN_PASSWORD</code> rakha hai wahi daalo.</p>
+  <div id="envw" class="mut" style="color:#ffd48a;margin-bottom:10px"></div>
+  <input id="pw" type="password" placeholder="Admin password" autocomplete="current-password" style="margin-bottom:12px">
+  <button id="lb" style="width:100%">Login</button>
+</div></div>
+
+<div id="app">
+  <div id="tb"><button class="g" id="mb">☰</button><span>⚡ Admin Panel</span></div><div id="ov"></div>
+  <nav id="sd">
+    <div class="lg">⚡ Admin Panel</div>
+    <button data-p="o" class="on">📊 Overview</button>
+    <button data-p="u">👥 Users</button>
+    <button data-p="s">🌐 Sites</button>
+    <button data-p="c">📢 Channels</button>
+    <button data-p="w">🎨 Website</button>
+    <button data-p="x">⚙️ Settings</button>
+    <button data-p="a">🧾 Activity</button>
+    <button data-p="h">❓ Help</button>
+    <div class="sp"></div>
+    <button id="home">🏠 Site dekho ↗</button>
+    <button id="out">🚪 Logout</button>
+  </nav>
+  <main id="m"><h2 id="h"></h2><div id="v"></div></main>
+</div>
+<div id="t"></div>
+<dialog id="dlg"></dialog>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let D=null,P='o',Q='',SF='all',EDIT=null;
+const PL={telegram:['✈️','Telegram'],whatsapp:['💬','WhatsApp'],youtube:['▶️','YouTube'],instagram:['📸','Instagram'],discord:['🎮','Discord'],twitter:['𝕏','X / Twitter'],facebook:['📘','Facebook'],website:['🌐','Website'],other:['🔗','Other']};
+const TITLES={o:'Overview',u:'Users',s:'Sites',c:'Channels',w:'Website (naam, header, design)',x:'Settings',a:'Activity log',h:'Help & Setup'};
+
+function toast(m,ok=true){const t=$('t');t.textContent=m;t.style.background=ok?'#1f8f55':'#c53a41';t.style.display='block';clearTimeout(toast.i);toast.i=setTimeout(()=>t.style.display='none',2600)}
+async function api(u,b){const r=await fetch(u,b?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}:{});const j=await r.json().catch(()=>({}));if(!r.ok){const e=new Error(j.error||'Error');e.status=r.status;throw e}return j}
+const act=async(b,confirmMsg,msg)=>{if(confirmMsg&&!confirm(confirmMsg))return false;try{await api('/api/admin/action',b);toast(msg||'Ho gaya ✔');await load();return true}catch(e){toast(e.message,false);return false}};
+const ago=t=>{if(!t)return '–';const s=(Date.now()-t)/1000;if(s<60)return 'abhi';if(s<3600)return Math.floor(s/60)+' min pehle';if(s<86400)return Math.floor(s/3600)+' ghante pehle';return Math.floor(s/86400)+' din pehle'};
+const dt=t=>t?new Date(+t).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'–';
+const mb=b=>b>1048576?(b/1048576).toFixed(1)+' MB':(b/1024).toFixed(0)+' KB';
+
+/* ---------- login ---------- */
+$('lb').onclick=async()=>{try{await api('/api/admin/login',{password:$('pw').value});$('pw').value='';init()}catch(e){toast(e.message,false)}};
+$('pw').onkeydown=e=>{if(e.key==='Enter')$('lb').click()};
+$('out').onclick=async()=>{await api('/api/admin/login',{action:'logout'});location.reload()};
+$('home').onclick=()=>window.open('/','_blank');
+$('mb').onclick=()=>document.body.classList.toggle('nav');$('ov').onclick=()=>document.body.classList.remove('nav');
+document.querySelectorAll('#sd button[data-p]').forEach(b=>b.onclick=()=>{P=b.dataset.p;Q='';EDIT=null;document.body.classList.remove('nav');document.querySelectorAll('#sd button[data-p]').forEach(x=>x.classList.toggle('on',x===b));draw()});
+
+async function init(){
+  const j=await api('/api/admin/login').catch(()=>({}));
+  const mi=j.env?.missing||[];$('envw').textContent=mi.length?'⚠ Ye env variables nahi mile: '+mi.join(', ')+'. Vercel > Settings > Environment Variables me daalo aur Redeploy karo.':'';
+  $('lg').style.display=j.admin?'none':'block';$('app').style.display=j.admin?'block':'none';
+  if(j.admin)load();
+}
+async function load(){try{D=await api('/api/admin/data');draw()}catch(e){if(e.status===401)return init();toast(e.message,false)}}
+
+/* ---------- helpers for forms ---------- */
+const field=(id,label,val,ph='',type='text')=>'<div class="f"><label>'+label+'</label><input id="'+id+'" type="'+type+'" value="'+esc(val)+'" placeholder="'+esc(ph)+'"></div>';
+const toggle=(id,title,sub,on)=>'<label class="sw"><input type="checkbox" id="'+id+'"'+(on?' checked':'')+'><div><b>'+title+'</b><span>'+sub+'</span></div></label>';
+const gv=id=>{const e=$(id);return e.type==='checkbox'?e.checked:e.value};
+async function saveCfg(keys){const cfg={};keys.forEach(k=>cfg[k]=gv('c_'+k));await act({a:'savecfg',cfg},null,'Save ho gaya ✔ (website par turant dikhega)')}
+
+/* ---------- pages ---------- */
+function draw(){
+  if(!D)return;$('h').textContent=TITLES[P];const c=D.cfg;let h='';
+  if(P==='o'){
+    const t=D.totals,mx=Math.max(1,...D.chart.map(x=>Math.max(x.users,x.visits)));
+    const today=D.chart[D.chart.length-1];
+    h+='<div class="g4">'+[['👥','Users',t.users],['🌐','Sites',t.sites],['👁','Total visits',t.visits],['🚫','Banned',t.banned],['🆕','Aaj naye users',today.users],['💾','Storage used',mb(t.bytes)]].map(x=>'<div class="stat"><div class="n">'+x[2]+'</div><div class="l">'+x[0]+' '+x[1]+'</div></div>').join('')+'</div>';
+    h+='<div class="box"><div class="row sb"><h3 style="margin:0">Pichhle 14 din</h3><div class="lg2"><span><b style="background:var(--ac)"></b>Visits</span><span><b style="background:var(--ok)"></b>Signups</span></div></div><div class="bars">'+D.chart.map(x=>'<div title="'+x.d+': '+x.visits+' visits, '+x.users+' signups, '+x.uploads+' uploads"><span>'+(x.visits||'')+'</span><i style="height:'+(x.visits/mx*88)+'%"></i><i class="u" style="height:'+(x.users/mx*88)+'%"></i><span>'+x.d.slice(8)+'</span></div>').join('')+'</div></div>';
+    const top=[...D.sites].sort((a,b)=>(+b.visits||0)-(+a.visits||0)).slice(0,5);
+    h+='<div class="grid2"><div class="box"><h3>🔥 Top sites</h3>'+(top.map(s=>'<div class="row sb" style="padding:7px 0;border-bottom:1px solid var(--bd)"><a href="/s/'+esc(s.name)+'/" target="_blank">'+esc(s.name)+'</a><span class="mut">@'+esc(s.owner)+' • '+(s.visits||0)+' 👁</span></div>').join('')||'<p class="mut">Abhi koi site nahi</p>')+'</div>';
+    h+='<div class="box"><h3>🧾 Recent activity</h3>'+(D.logs.slice(0,6).map(l=>'<div class="log"><time>'+dt(l.t)+'</time><span>'+esc(l.msg)+'</span></div>').join('')||'<p class="mut">Kuch nahi</p>')+'</div></div>';
+    const st=[['Upstash Redis',D.env.redis],['ADMIN_PASSWORD',D.env.adminPassword],['Password strong (8+)',D.env.adminPasswordStrong]];
+    h+='<div class="box"><h3>Status</h3><div class="row">'+st.map(s=>'<span class="pill '+(s[1]?'ok':'off')+'">'+(s[1]?'✔':'✖')+' '+s[0]+'</span>').join('')+(c.maintenance?'<span class="pill wa">🛠 Maintenance ON</span>':'')+(!c.signupOpen?'<span class="pill wa">🔒 Signup band</span>':'')+'</div></div>';
+  }
+  if(P==='u'){
+    const list=D.users.filter(u=>u.u.includes(Q.toLowerCase()));
+    h+='<div class="row sb" style="margin-bottom:12px"><input id="q" placeholder="🔍 user search" value="'+esc(Q)+'" style="max-width:320px"><button id="addu">➕ User add karo</button></div>';
+    h+='<div class="box tw"><table><tr><th>User</th><th>Joined</th><th>Last login</th><th>Sites</th><th>Status</th><th></th></tr>'+list.map(u=>'<tr><td><b>'+esc(u.u)+'</b></td><td>'+dt(u.created)+'</td><td>'+ago(u.last)+'</td><td>'+u.sites+(u.limit?' / '+u.limit:'')+'</td><td>'+(u.banned?'<span class="pill off">Banned</span>':'<span class="pill ok">Active</span>')+'</td><td><div class="row"><button class="g sm" data-ud="'+esc(u.u)+'">Details</button><button class="'+(u.banned?'g':'r')+' sm" data-ub="'+esc(u.u)+'" data-b="'+(u.banned?'unban':'ban')+'">'+(u.banned?'Unban':'Ban')+'</button></div></td></tr>').join('')+'</table>'+(list.length?'':'<p class="mut" style="padding:12px">Koi user nahi mila</p>')+'</div>';
+  }
+  if(P==='s'){
+    const list=D.sites.filter(s=>(s.name+s.owner).includes(Q.toLowerCase())&&(SF==='all'||(SF==='off')===(String(s.disabled)==='1')));
+    h+='<div class="row" style="margin-bottom:12px"><input id="q" placeholder="🔍 site / owner search" value="'+esc(Q)+'" style="max-width:320px"><select id="sf" style="max-width:150px"><option value="all">Sab</option><option value="off"'+(SF==='off'?' selected':'')+'>Disabled</option><option value="on"'+(SF==='on'?' selected':'')+'>Live</option></select></div>';
+    h+='<div class="box tw"><table><tr><th>Site</th><th>Owner</th><th>Files</th><th>Size</th><th>Visits</th><th>Status</th><th></th></tr>'+list.map(s=>'<tr><td><a href="/s/'+esc(s.name)+'/" target="_blank">'+esc(s.name)+' ↗</a></td><td>@'+esc(s.owner)+'</td><td>'+(s.files||0)+'</td><td>'+mb(+s.size||0)+'</td><td>'+(s.visits||0)+'</td><td>'+(String(s.disabled)==='1'?'<span class="pill off">Off</span>':'<span class="pill ok">Live</span>')+'</td><td><div class="row"><button class="g sm" data-st="'+esc(s.name)+'">'+(String(s.disabled)==='1'?'Enable':'Disable')+'</button><button class="r sm" data-sd="'+esc(s.name)+'">Delete</button></div></td></tr>').join('')+'</table>'+(list.length?'':'<p class="mut" style="padding:12px">Koi site nahi mili</p>')+'</div>';
+  }
+  if(P==='c'){
+    const e=EDIT;
+    h+='<div class="box"><h3>'+(e&&e.id?'✏️ Channel edit karo':'➕ Naya channel add karo')+'</h3><div class="grid2"><div class="f"><label>Channel ka naam</label><input id="ch_name" value="'+esc(e?.name||'')+'" placeholder="Jaise: Genius Updates"></div>'+
+      '<div class="f"><label>Platform</label><select id="ch_platform">'+Object.entries(PL).map(([k,v])=>'<option value="'+k+'"'+((e?.platform||'telegram')===k?' selected':'')+'>'+v[0]+' '+v[1]+'</option>').join('')+'</select></div></div>'+
+      '<div class="grid2"><div class="f"><label>Link ya @username</label><input id="ch_url" value="'+esc(e?.url||'')+'" placeholder="https://t.me/yourchannel  ya  @yourchannel"></div><div class="f"><label>Chhota description (optional)</label><input id="ch_desc" value="'+esc(e?.desc||'')+'" placeholder="Daily updates & offers"></div></div>'+
+      '<div class="row"><button id="chs">'+(e&&e.id?'Update karo':'Add karo')+'</button>'+(e?'<button class="g" id="chc">Cancel</button>':'')+'</div></div>';
+    h+='<div class="box"><div class="row sb" style="margin-bottom:10px"><h3 style="margin:0">Channels ('+D.channels.length+')</h3><span class="mut">Ye website par "Hamare channels" section mein dikhte hain. Clicks track hote hain.</span></div>'+
+      (D.channels.map((x,i)=>'<div class="chr"><div class="ic">'+(PL[x.platform]||PL.other)[0]+'</div><div class="i"><b>'+esc(x.name)+' '+(x.on?'':'<span class="pill off">Hidden</span>')+'</b><span class="mut">'+esc(x.url)+'</span></div><span class="pill wa">'+x.clicks+' clicks</span><div class="row"><button class="g sm" data-cm="up|'+x.id+'"'+(i?'':' disabled')+'>↑</button><button class="g sm" data-cm="down|'+x.id+'"'+(i<D.channels.length-1?'':' disabled')+'>↓</button><button class="g sm" data-ct="'+x.id+'">'+(x.on?'Hide':'Show')+'</button><button class="g sm" data-ce="'+x.id+'">Edit</button><button class="r sm" data-cd="'+x.id+'">Delete</button></div></div>').join('')||'<p class="mut">Abhi koi channel nahi. Upar se add karo 👆</p>')+'</div>';
+  }
+  if(P==='w'){
+    h+='<div class="grid2"><div>'+
+      '<div class="box"><h3>🏷 Naam & Header</h3>'+field('c_name','Website ka naam (header mein dikhega)',c.name,'Genius Hosting')+field('c_logo','Logo — emoji ya image ka https link',c.logo,'🚀  ya  https://.../logo.png')+field('c_tagline','Tagline (browser title mein)',c.tagline)+
+      '<div class="f"><label>Theme / accent color</label><div class="row"><input id="c_accent" type="color" value="'+esc(c.accent)+'"><span class="mut">Buttons, links aur glow ka rang</span></div></div></div>'+
+      '<div class="box"><h3>📣 Announcement bar</h3>'+toggle('c_announceOn','Top bar dikhao','Sabse upar rangeen strip',c.announceOn)+'<div style="height:10px"></div>'+field('c_announce','Announcement text',c.announce,'🎉 Naya feature aa gaya!')+'</div></div>'+
+      '<div><div class="box"><h3>🏠 Home page text</h3>'+field('c_heroTitle','Bada heading',c.heroTitle)+'<div class="f"><label>Heading ke neeche text</label><textarea id="c_heroText" rows="3">'+esc(c.heroText)+'</textarea></div>'+field('c_seoDesc','SEO description (Google ke liye)',c.seoDesc)+'</div>'+
+      '<div class="box"><h3>🔻 Footer</h3>'+field('c_footer','Footer text',c.footer,'© 2026 Mera Brand')+field('c_contact','Contact (link ya text)',c.contact,'https://t.me/yourname')+'</div>'+
+      '<div class="box"><h3>👨‍💻 Developer credit</h3>'+field('c_devName','Developer ka naam (footer me "Developed by ...")',c.devName,'Deepak')+field('c_devLink','Developer link (optional)',c.devLink,'https://t.me/yourname')+'<p class="mut">Khali chhodoge to footer me credit nahi dikhega.</p></div></div></div>'+
+      '<button id="sw">💾 Save karo</button>';
+  }
+  if(P==='x'){
+    h+='<div class="grid2"><div>'+
+      '<div class="box"><h3>🔐 Access</h3>'+toggle('c_signupOpen','Signup open','Band karoge to naye log account nahi bana paayenge',c.signupOpen)+'<div style="height:10px"></div>'+toggle('c_maintenance','Maintenance mode','Login/upload band, visitors ko message dikhega (sites chalti rahengi)',c.maintenance)+'<div style="height:10px"></div>'+field('c_maintenanceMsg','Maintenance message',c.maintenanceMsg)+'</div>'+
+      '<div class="box"><h3>🚫 Blocked site names</h3><div class="f"><label>Comma se alag karo</label><input id="c_blocked" value="'+esc(c.blocked)+'"></div><p class="mut">In naamon se koi site nahi ban sakti.</p></div></div>'+
+      '<div class="box"><h3>📏 Limits</h3>'+field('c_maxSites','Ek user ki max sites',c.maxSites,'','number')+field('c_maxFiles','Ek site mein max files',c.maxFiles,'','number')+field('c_maxZipMB','Max upload size (MB, 1-4)',c.maxZipMB,'','number')+
+      '<p class="mut">⚠ Vercel free me upload limit 4.5MB hai, isliye 4 se zyada nahi. Har file max 600KB (Upstash free limit). User-wise limit "Users → Details" se alag se set hoti hai.</p></div></div>'+
+      '<button id="sw">💾 Save karo</button>';
+  }
+  if(P==='a'){
+    h+='<div class="row sb" style="margin-bottom:10px"><span class="mut">Last 100 events</span><button class="r sm" id="cl">Clear log</button></div><div class="box">'+(D.logs.map(l=>'<div class="log"><time>'+dt(l.t)+'</time><span class="pill '+(l.type==='security'?'off':l.type==='admin'?'wa':'ok')+'" style="align-self:flex-start">'+esc(l.type)+'</span><span>'+esc(l.msg)+'</span></div>').join('')||'<p class="mut">Abhi koi activity nahi</p>')+'</div>';
+  }
+  if(P==='h'){
+    h+='<div class="box help"><h3>Environment variables</h3><ul><li><code>UPSTASH_REDIS_REST_URL</code> — Upstash database ka REST URL</li><li><code>UPSTASH_REDIS_REST_TOKEN</code> — Upstash REST token</li><li><code>ADMIN_PASSWORD</code> — is panel ka password (kam se kam 8 characters)</li><li><code>UPSTASH_REDIS_REST_URL</code>, <code>UPSTASH_REDIS_REST_TOKEN</code>, <code>ADMIN_PASSWORD</code> (min 8 chars) — teeno zaroori hain.</li></ul><p class="mut" style="margin-top:10px">Env badalne ke baad Vercel me <b>Redeploy</b> zaroor karo. ADMIN_PASSWORD badloge to sab admin sessions logout ho jaate hain.</p></div>'+
+      '<div class="box help"><h3>Baaki sab yahin se</h3><ul><li><b>Website tab</b> — naam, logo, header, heading, footer, color, announcement</li><li><b>Channels tab</b> — channel add/edit/delete, order, hide/show, click count</li><li><b>Users tab</b> — dekho, ban/unban, password reset, user add, delete, site limit</li><li><b>Sites tab</b> — sab sites, disable/enable, delete</li><li><b>Settings tab</b> — signup on/off, maintenance, limits, blocked names</li></ul></div>'+
+      '<div class="box help"><h3>Limits (free plan)</h3><ul><li>Vercel request body max 4.5MB, Upstash free me ek file ≤ 600KB</li><li>Uploaded sites sandbox me chalti hain (security ke liye) — <code>localStorage</code> / cookies unme kaam nahi karte</li><li>Visits approx. hote hain (HTML 10 sec cache hota hai)</li></ul></div>';
+  }
+  $('v').innerHTML=h;bind();
+}
+
+function bind(){
+  const q=$('q');if(q)q.oninput=()=>{Q=q.value;const p=q.selectionStart;draw();const n=$('q');n.focus();n.setSelectionRange(p,p)};
+  const sf=$('sf');if(sf)sf.onchange=()=>{SF=sf.value;draw()};
+  const sw=$('sw');if(sw)sw.onclick=()=>saveCfg(P==='w'?['name','logo','tagline','accent','announceOn','announce','heroTitle','heroText','seoDesc','footer','devName','devLink','contact']:['signupOpen','maintenance','maintenanceMsg','blocked','maxSites','maxFiles','maxZipMB']);
+  $('v').querySelectorAll('[data-ub]').forEach(b=>b.onclick=()=>act({a:b.dataset.b,u:b.dataset.ub},b.dataset.b==='ban'?b.dataset.ub+' ko ban karein? Uski saari sites bhi band ho jaayengi.':null));
+  $('v').querySelectorAll('[data-ud]').forEach(b=>b.onclick=()=>userDlg(b.dataset.ud));
+  $('v').querySelectorAll('[data-st]').forEach(b=>b.onclick=()=>act({a:'togglesite',name:b.dataset.st}));
+  $('v').querySelectorAll('[data-sd]').forEach(b=>b.onclick=()=>act({a:'delsite',name:b.dataset.sd},'Site "'+b.dataset.sd+'" delete karein?'));
+  const au=$('addu');if(au)au.onclick=addUserDlg;
+  $('v').querySelectorAll('[data-cm]').forEach(b=>b.onclick=()=>{const[v,id]=b.dataset.cm.split('|');act({a:'chmove',id,value:v},null,'Order badal gaya')});
+  $('v').querySelectorAll('[data-ct]').forEach(b=>b.onclick=()=>act({a:'chtoggle',id:b.dataset.ct}));
+  $('v').querySelectorAll('[data-ce]').forEach(b=>b.onclick=()=>{EDIT={...D.channels.find(x=>x.id===b.dataset.ce)};draw();window.scrollTo({top:0,behavior:'smooth'})});
+  $('v').querySelectorAll('[data-cd]').forEach(b=>b.onclick=()=>act({a:'chdel',id:b.dataset.cd},'Channel delete karein?'));
+  const cs=$('chs');if(cs)cs.onclick=async()=>{const ch={id:EDIT?.id,on:EDIT?EDIT.on:true,name:gv('ch_name'),platform:gv('ch_platform'),url:gv('ch_url'),desc:gv('ch_desc')};if(await act({a:'chsave',ch},null,EDIT?.id?'Channel update ho gaya ✔':'Channel add ho gaya ✔')){EDIT=null;draw()}};
+  const cc=$('chc');if(cc)cc.onclick=()=>{EDIT=null;draw()};
+  const cl=$('cl');if(cl)cl.onclick=()=>act({a:'clearlog'},'Log clear karein?');
+}
+
+/* ---------- dialogs ---------- */
+function addUserDlg(){
+  const d=$('dlg');d.innerHTML='<h3 style="margin-bottom:12px">➕ Naya user</h3><div class="f"><label>Username</label><input id="nu" autocapitalize="none"></div><div class="f"><label>Password (min 8)</label><input id="np" type="text"></div><div class="row"><button id="nok">Add karo</button><button class="g" id="nx">Cancel</button></div>';
+  d.showModal();$('nx').onclick=()=>d.close();$('nok').onclick=async()=>{if(await act({a:'adduser',u:gv('nu'),value:gv('np')},null,'User ban gaya ✔'))d.close()};
+}
+function userDlg(name){
+  const u=D.users.find(x=>x.u===name),sites=D.sites.filter(s=>s.owner===name),d=$('dlg');
+  d.innerHTML='<div class="row sb"><h3 style="margin:0">👤 '+esc(u.u)+'</h3>'+(u.banned?'<span class="pill off">Banned</span>':'<span class="pill ok">Active</span>')+'</div>'+
+   '<p class="mut" style="margin:8px 0 12px">Joined: '+dt(u.created)+' • Last login: '+ago(u.last)+'</p>'+
+   '<h3 style="font-size:14px">Sites ('+sites.length+')</h3><div style="max-height:140px;overflow:auto;margin-bottom:12px">'+(sites.map(s=>'<div class="row sb" style="padding:5px 0"><a href="/s/'+esc(s.name)+'/" target="_blank">'+esc(s.name)+'</a><span class="mut">'+(s.visits||0)+' 👁 • '+mb(+s.size||0)+'</span></div>').join('')||'<span class="mut">Koi site nahi</span>')+'</div>'+
+   '<div class="f"><label>Is user ki site limit (0 = default '+D.cfg.maxSites+')</label><div class="row"><input id="ul" type="number" min="0" value="'+(u.limit||0)+'" style="max-width:110px"><button class="g sm" id="usl">Set</button></div></div>'+
+   '<div class="f"><label>Naya password (min 8)</label><div class="row"><input id="upw" placeholder="new password" style="flex:1"><button class="g sm" id="upb">Reset</button></div></div>'+
+   '<div class="row" style="margin-top:14px"><button class="r" id="udel">🗑 User delete</button><button class="g" id="ux" style="margin-left:auto">Close</button></div>';
+  d.showModal();$('ux').onclick=()=>d.close();
+  $('usl').onclick=async()=>{if(await act({a:'setlimit',u:name,value:gv('ul')}))userDlg(name)};
+  $('upb').onclick=async()=>{if(await act({a:'resetpw',u:name,value:gv('upw')},null,'Password badal gaya ✔'))$('upw').value=''};
+  $('udel').onclick=async()=>{if(await act({a:'deluser',u:name},name+' aur uski saari sites delete ho jaayengi. Pakka?'))d.close()};
+}
+init();
+</script>
+</body>
+</html>
